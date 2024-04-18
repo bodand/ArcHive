@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Page
+    x:Class="ArcHive.View.ListPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:ArcHive.View"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:viewModel="using:ArcHive.ViewModel"
+    mc:Ignorable="d"
+    NavigationCacheMode="Required"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <GridView x:Name="ResultsCollection"
+              VerticalAlignment="Stretch"
+              HorizontalAlignment="Center"
+              HorizontalContentAlignment="Stretch"
+              SelectionMode="None"
+              Margin="24"
+              ItemsSource="{x:Bind Model.ListElements, Mode=OneWay}"
+              Loaded="ResultsCollection_OnLoaded">
+        <GridView.ItemTemplate>
+            <DataTemplate x:DataType="viewModel:BookCardViewModel">
+                <Grid Margin="2 14" Width="225" Height="315">
+                    <local:BookCardView Clicked="BookCardView_Clicked"
+                                        Model="{x:Bind Mode=TwoWay}" />
+                </Grid>
+            </DataTemplate>
+        </GridView.ItemTemplate>
+    </GridView>
+</Page>

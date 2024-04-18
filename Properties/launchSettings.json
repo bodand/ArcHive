@@ -1,0 +1,14 @@
+{
+  "profiles": {
+    "ArcHive (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "ArcHive (Unpackaged)": {
+      "commandName": "Project"
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "distributionName": ""
+    }
+  }
+}
