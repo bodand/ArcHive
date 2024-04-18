@@ -1,0 +1,9 @@
+# ArcHive 
+
+A Windows desktop client for searching the OpenLibrary database.
+Written in WinUI 3 for Windows 10 and Windows 11.
+
+## Homework disclaimer
+
+This was my homework for the class _Clientside technologies_ at the Budapest University of Technology and Economics.
+
