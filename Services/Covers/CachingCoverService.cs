@@ -11,10 +11,27 @@ using Autofac.Features.AttributeFilters;
 namespace ArcHive.Services.Covers;
 
 /// <summary>
-///     A
+///     A special cache capable layer for downloading cover images.
+///     Wraps an existing "raw" <see cref="ICoverService"/> object, and stores
+///     the downloaded files in a system-wide application-specific temporary
+///     directory.
 /// </summary>
-/// <param name="httpClient"></param>
-/// <param name="coverService"></param>
+/// <remarks>
+///     Other than caching, this implementation allows us to immediately change
+///     the loading-ring into a loaded image, since the image is available, and
+///     not a remote-url that is provided to the image rendering XAML tag.
+///
+///     The side-effect of this behavior is that the URL strings returned by
+///     this object are absolute paths on the current system, and not internet
+///     relevant URIs.
+/// </remarks>
+/// <param name="httpClient">
+///     The HttpClient to use for accessing the internet based URL entities.
+/// </param>
+/// <param name="coverService">
+///     The wrapped cover service. Is a "raw" cover service, and not cached by
+///     another "cached" cover service layer.
+/// </param>
 public class CachingCoverService(
     HttpClient httpClient,
     [KeyFilter("raw")] ICoverService coverService
@@ -22,6 +39,7 @@ public class CachingCoverService(
 {
     private readonly StorageFolder _appTempDir = ApplicationData.Current.TemporaryFolder;
 
+    /// <inheritdoc />
     public async Task<string?> GetCoverUrlFromOlid(string olid,
         ICoverService.Size size = ICoverService.Size.Medium,
         CancellationToken token = default)
@@ -87,6 +105,7 @@ public class CachingCoverService(
         return await response.Content.ReadAsStreamAsync(token);
     }
 
+    /// <inheritdoc />
     public async Task<string?> GetCoverUrlFromIsbn(string isbn,
         ICoverService.Size size = ICoverService.Size.Medium,
         CancellationToken token = default)

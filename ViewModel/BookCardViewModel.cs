@@ -10,15 +10,38 @@ using Microsoft.UI.Dispatching;
 
 namespace ArcHive.ViewModel;
 
+/// <summary>
+///     A viewmodel for the book card view, as used when rendering the listing
+///     of found entity elements.
+/// </summary>
 public partial class BookCardViewModel : ObservableObject
 {
+    /// <summary>
+    ///     The book entity that is rendered in the card.
+    /// </summary>
     [ObservableProperty]
     private Work _work;
+
+    // todo
     [ObservableProperty]
     private bool _loaded;
+
+    /// <summary>
+    ///     The loading-ring capable url for the medium cover of the image.
+    /// </summary>
     [ObservableProperty]
     private LoadingUrl _iconUrl = new(null);
 
+    /// <summary>
+    ///     A constructor that initializes the viewmodel, its fields and
+    ///     internal event handlers.
+    /// </summary>
+    /// <param name="work">The book to show.</param>
+    /// <param name="covers">The cover service.</param>
+    /// <param name="token">
+    ///     The cancellation token, which is passed to the cover service when
+    ///     using it.
+    /// </param>
     public BookCardViewModel(Work work, ICoverService covers, CancellationToken token)
     {
         _work = work;

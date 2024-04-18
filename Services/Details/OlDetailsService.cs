@@ -10,6 +10,13 @@ using ArcHive.Model;
 
 namespace ArcHive.Services.Details;
 
+/// <summary>
+///     An <see cref="IDetailsService"/> implementation that directly communicates
+///     with the OpenLibrary API endpoints.
+/// </summary>
+/// <param name="httpClient">
+///     The HttpClient to use for accessing the internet based URL entities.
+/// </param>
 public class OlDetailsService(HttpClient httpClient) : IDetailsService
 {
     private readonly JsonSerializerOptions _jsonOptions = new()
@@ -26,20 +33,17 @@ public class OlDetailsService(HttpClient httpClient) : IDetailsService
         public BookshelfDto Dto { get; set; } = null!;
     }
 
-    public Task<Bookshelf?> BookshelfOf(string workOlid)
+    /// <inheritdoc />
+    public async Task<Bookshelf?> BookshelfOf(string workOlid)
     {
         try
         {
-            return GetBookshelfFromHttp(workOlid);
+            return await GetBookshelfFromHttp(workOlid);
         }
-        catch (HttpRequestException)
-        {
-        }
-        catch (JsonException)
-        {
-        }
+        catch (HttpRequestException) { }
+        catch (JsonException) { }
 
-        return Task.FromResult<Bookshelf?>(null);
+        return null;
     }
 
     private async Task<Bookshelf?> GetBookshelfFromHttp(string workOlid)
@@ -50,18 +54,15 @@ public class OlDetailsService(HttpClient httpClient) : IDetailsService
         return new Bookshelf(payload.Dto);
     }
 
+    /// <inheritdoc />
     public async Task<WorkDetails?> GetDetailsOf(string workOlid)
     {
         try
         {
             return await GetDetailsFromHttp(workOlid);
         }
-        catch (HttpRequestException)
-        {
-        }
-        catch (JsonException)
-        {
-        }
+        catch (HttpRequestException) { }
+        catch (JsonException) { }
 
         return null;
     }
@@ -73,7 +74,7 @@ public class OlDetailsService(HttpClient httpClient) : IDetailsService
 
         var jsonData = await new StreamReader(await payload.Content.ReadAsStreamAsync()).ReadToEndAsync();
         if (!JsonObject.TryParse(jsonData, out var json)) return null;
- 
+
         json.TryGetValue("description", out var desc);
         if (desc is null) return null;
 

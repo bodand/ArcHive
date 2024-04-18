@@ -7,7 +7,14 @@ using System.Threading.Tasks;
 
 namespace ArcHive.Services.Covers;
 
-internal class OlCoverService(
+/// <summary>
+///     An <see cref="ICoverService"/> implementation that directly communicates
+///     with the OpenLibrary Covers API.
+/// </summary>
+/// <param name="httpClient">
+///     The HttpClient to use for accessing the internet based URL entities.
+/// </param>
+public class OlCoverService(
     HttpClient httpClient
 ) : ICoverService
 {
@@ -22,6 +29,7 @@ internal class OlCoverService(
 
     private const string RootUrl = "https://covers.openlibrary.org/b/";
 
+    /// <inheritdoc />
     public async Task<string?> GetCoverUrlFromIsbn(string isbn,
         ICoverService.Size size = ICoverService.Size.Medium,
         CancellationToken token = default)
@@ -50,6 +58,7 @@ internal class OlCoverService(
         };
     }
 
+    /// <inheritdoc />
     public async Task<string?> GetCoverUrlFromOlid(string olid,
         ICoverService.Size size = ICoverService.Size.Medium,
         CancellationToken token = default)

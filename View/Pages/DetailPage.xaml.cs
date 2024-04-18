@@ -9,13 +9,19 @@ using Microsoft.UI.Xaml.Navigation;
 namespace ArcHive.View.Pages;
 
 /// <summary>
-/// An empty page that can be used on its own or navigated to within a Frame.
+///     The page object for rendering the detailed information of a book.
 /// </summary>
 [ObservableObject]
 public sealed partial class DetailPage : Page
 {
+    /// <summary>
+    ///     The viewmodel of the detail view.
+    /// </summary>
     public DetailPageViewModel Model { get; set; }
 
+    /// <summary>
+    ///     Constructs a view and constructs the model.
+    /// </summary>
     public DetailPage()
     {
         InitializeComponent();

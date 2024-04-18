@@ -2,9 +2,7 @@ using System;
 using System.ComponentModel;
 using Windows.ApplicationModel;
 using Windows.Foundation;
-using ArcHive.Services.Search;
 using ArcHive.ViewModel;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.UI.Input;
 using Microsoft.UI.Windowing;
 using Microsoft.UI.Xaml;
@@ -12,18 +10,21 @@ using Microsoft.UI.Xaml.Controls;
 using ArcHive.Model.Search;
 using CommunityToolkit.Mvvm.ComponentModel;
 using System.Numerics;
-using System.Threading.Tasks;
+using ArcHive.View.Pages;
 
 namespace ArcHive.View;
 
 /// <summary>
-/// An empty window that can be used on its own or navigated to within a Frame.
+///     The main window view of the application.
 /// </summary>
 [ObservableObject]
 public sealed partial class MainWindow : Window
 {
     private readonly AppWindow _appWindow;
 
+    /// <summary>
+    ///     The viewmodel of the view.
+    /// </summary>
     public MainWindowViewModel Model { get; set; }
 
     [ObservableProperty]
@@ -32,9 +33,20 @@ public sealed partial class MainWindow : Window
     [ObservableProperty]
     private bool _basicSearchEnabled = true;
 
+    /// <summary>
+    ///     A search field for generating simple all-encompassing queries.
+    /// </summary>
     public SimpleSearchField SimpleSearchField { get; set; } = new();
+
+    /// <summary>
+    ///     A search field for generating specially crafted queries.
+    /// </summary>
     public ComplexSearchField ComplexSearchField { get; set; } = new();
 
+    /// <summary>
+    ///     A constructor that initializes the view, and sets the title-bar.
+    ///     The viewmodel is also set, and is not null after this has run.
+    /// </summary>
     public MainWindow()
     {
         InitializeComponent();

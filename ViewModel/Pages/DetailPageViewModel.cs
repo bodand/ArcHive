@@ -3,14 +3,26 @@ using System.Threading.Tasks;
 using ArcHive.Model;
 using ArcHive.Services.Covers;
 using ArcHive.Services.Details;
-using ArcHive.Services.Search;
 using Autofac.Features.AttributeFilters;
 using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace ArcHive.ViewModel.Pages;
 
+/// <summary>
+///     The viewmodel for the details page view.
+/// </summary>
 public sealed partial class DetailPageViewModel : ObservableObject
 {
+    /// <summary>
+    ///     Constructor for the details viewmodel.
+    ///     Initializes internal event handlers, and fields.
+    /// </summary>
+    /// <param name="coverService">
+    ///     The cover service to use. Required to be "cached".
+    /// </param>
+    /// <param name="detailsService">
+    ///     The details service to use.
+    /// </param>
     public DetailPageViewModel(
         [KeyFilter("cached")] ICoverService coverService,
         IDetailsService detailsService)
@@ -85,28 +97,63 @@ public sealed partial class DetailPageViewModel : ObservableObject
         RatingsCount = $"{Work.RatingsAverage:F} \u22c5 {count} ratings";
     }
 
+    /// <summary>
+    ///     The rate by which to set the reading statistics' grid columns' for
+    ///     the wants to read statistics to.
+    /// </summary>
     [ObservableProperty]
-    private string _wantRate = "Auto";
-    [ObservableProperty]
-    private string _currentRate = "Auto";
-    [ObservableProperty]
-    private string _readedRate = "Auto";
+    private string _wantRate = "*";
 
+    /// <summary>
+    ///     The rate by which to set the reading statistics' grid columns' for
+    ///     the currently reading statistics to.
+    /// </summary>
+    [ObservableProperty]
+    private string _currentRate = "*";
+
+    /// <summary>
+    ///     The rate by which to set the reading statistics' grid columns' for
+    ///     the already read statistics to.
+    /// </summary>
+    [ObservableProperty]
+    private string _readedRate = "*";
+
+    /// <summary>
+    ///     The book to show the details of.
+    /// </summary>
     [ObservableProperty]
     private Work _work = default!;
 
+    /// <summary>
+    ///     The bookshelf extraneous data to show the as the details for the
+    ///     book. Automatically loaded when a book object is assigned.
+    /// </summary>
     [ObservableProperty]
     private Bookshelf? _bookshelf;
 
+    /// <summary>
+    ///     The extraneous data to show the as the details for the book.
+    ///     Automatically loaded when a book object is assigned.
+    /// </summary>
     [ObservableProperty]
     private WorkDetails? _details;
 
+    /// <summary>
+    ///     The loading-ring ready url for the large version of the cover of the
+    ///     rendered book. Automatically loaded when a book object is assigned.
+    /// </summary>
     [ObservableProperty]
     private LoadingUrl _largeImage;
 
+    /// <summary>
+    ///     The rating value of the book scaled for the rating component.
+    /// </summary>
     [ObservableProperty]
     private double _rating = -1;
 
+    /// <summary>
+    ///     The label value for the label component of the book.
+    /// </summary>
     [ObservableProperty]
     private string _ratingsCount = "There are no ratings";
 }

@@ -1,16 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 using ArcHive.Model;
 using ArcHive.Model.Search;
 
 namespace ArcHive.Services.Search;
 
+/// <summary>
+///     An <see cref="ISearchService"/> implementation that directly
+///     communicates with the OpenLibrary query API endpoint.
+/// </summary>
+/// <param name="httpClient">
+///     The HttpClient to use for accessing the internet based URL entities.
+/// </param>
 public class OlSearchService(
     HttpClient httpClient
 ) : ISearchService
@@ -28,6 +33,7 @@ public class OlSearchService(
     private const int LimitSteps = 20;
     private const string RootUrl = "https://openlibrary.org/search.json";
 
+    /// <inheritdoc />
     public async IAsyncEnumerable<Work> FindWorks(ISearchFields fields)
     {
         var offset = 0;

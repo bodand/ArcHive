@@ -10,6 +10,12 @@ using Autofac.Features.AttributeFilters;
 
 namespace ArcHive.ViewModel.Pages;
 
+/// <summary>
+///     A viewmodel for the view of the page rendering the list of returned
+///     search results.
+/// </summary>
+/// <param name="searchService">A search service.</param>
+/// <param name="coverService">A "cache" capable cover service.</param>
 public class ListPageViewModel(
     ISearchService searchService,
     [KeyFilter("cached")]
@@ -17,11 +23,24 @@ public class ListPageViewModel(
 )
 {
     private CancellationTokenSource? _cts = null;
+
+    /// <summary>
+    ///     The list of found books, represented by their viewmodels.
+    /// </summary>
     public readonly ObservableCollection<BookCardViewModel> ListElements = [];
 
+    /// <summary>
+    ///     Starts a search based on the provided search fields object using the
+    ///     ctor injected <see cref="ISearchService"/> object.
+    /// </summary>
+    /// <param name="fields">The fields to query for.</param>
+    /// <param name="searchInitiator">
+    ///     The search initiator object that is notified when the searching
+    ///     finishes.
+    /// </param>
     public async Task DoSearch(ISearchFields fields, ISearchInitiator searchInitiator)
     {
-        _cts?.Cancel();
+        if (_cts is not null) await _cts.CancelAsync();
         _cts = new CancellationTokenSource();
         var token = _cts.Token;
 
